@@ -53,18 +53,20 @@ function scrambleTo(el: HTMLElement, word: string): Promise<void> {
   });
 }
 
-export function initScramble(el: HTMLElement) {
+export function initScramble(el: HTMLElement, ariaEl?: HTMLElement) {
   let currentIndex = 0;
 
   async function loop() {
     while (true) {
       await scrambleTo(el, WORDS[currentIndex]);
+      if (ariaEl) ariaEl.textContent = WORDS[currentIndex];
       await new Promise((r) => setTimeout(r, PAUSE_BETWEEN));
       currentIndex = (currentIndex + 1) % WORDS.length;
     }
   }
 
   el.textContent = WORDS[0];
+  if (ariaEl) ariaEl.textContent = WORDS[0];
   currentIndex = 1;
   setTimeout(() => loop(), PAUSE_BETWEEN);
 }

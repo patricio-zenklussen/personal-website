@@ -1,19 +1,36 @@
 ---
+// font-display: swap is handled by @fontsource; woff2 hashes prevent static preload
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/700.css';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
+  description?: string;
+  ogImage?: string;
 }
 
-const { title = 'Patricio Zenklussen' } = Astro.props;
+const defaultDescription = 'Patricio Zenklussen — Researcher, Listener, Learner, Writer, Photographer, Reader, Watcher.';
+const {
+  title = 'Patricio Zenklussen',
+  description = defaultDescription,
+  ogImage = '/og.svg',
+} = Astro.props;
 ---
 <html lang="es" data-theme="cyan">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Patricio Zenklussen — Researcher, Listener, Learner, Writer, Photographer, Reader, Watcher." />
+    <meta name="description" content={description} />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <script is:inline>

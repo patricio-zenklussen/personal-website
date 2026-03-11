@@ -2,11 +2,20 @@
 import Base from '../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
 
-const posts = (await getCollection('blog')).sort(
+const allPosts = (await getCollection('blog')).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
 
+const posts = import.meta.env.PROD
+  ? allPosts.filter((p) => !p.data.draft)
+  : allPosts;
+
 const categories = ['all', ...new Set(posts.map((p) => p.data.category))];
+
+function formatDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
+}
 
 const renderedPosts = await Promise.all(
   posts.map(async (post) => {
@@ -22,7 +31,8 @@ const renderedPosts = await Promise.all(
       <div class="col-1-top">
         <div class="identity">
           <p class="name" id="name-target">PATRICIO ZENKLUSSEN</p>
-          <p class="subtitle text-muted" id="scramble-target">RESEARCHER</p>
+          <p class="subtitle text-muted" id="scramble-target" aria-hidden="true">RESEARCHER</p>
+          <span id="scramble-aria" class="sr-only" aria-live="polite">RESEARCHER</span>
         </div>
 
         <ul class="nav-links">
@@ -31,7 +41,7 @@ const renderedPosts = await Promise.all(
         </ul>
 
         <ul class="nav-links">
-          <li><a href="#" id="contact-link">CONTACT</a></li>
+          <li><a href="#" id="contact-link" aria-label="Contact via email">CONTACT</a></li>
         </ul>
 
         <ul class="nav-links">
@@ -43,19 +53,19 @@ const renderedPosts = await Promise.all(
       </div>
 
       <div class="col-1-bottom">
-        <button class="meta-btn" data-nav="about-site">ABOUT THIS SITE</button>
-        <button class="meta-btn" id="theme-btn">
+        <button class="meta-btn" data-nav="about-site" aria-label="About this site">ABOUT THIS SITE</button>
+        <button class="meta-btn" id="theme-btn" aria-label="Toggle theme">
           THEME: <span id="theme-label">CYAN</span>
         </button>
       </div>
     </nav>
 
     <!-- Column 2: Content Panel -->
-    <section class="col col-2" id="col-2">
+    <section class="col col-2" id="col-2" role="region" aria-label="Content">
       <!-- About Panel (summary) -->
       <div id="panel-about" style="display: none;">
-        <button class="back-btn" data-back="col2">&larr; BACK</button>
-        <h2 class="panel-title">ABOUT</h2>
+        <button class="back-btn" data-back="col2" aria-label="Go back">&larr; BACK</button>
+        <h2 class="panel-title" tabindex="-1">ABOUT</h2>
         <div class="prose">
           <p><strong>Patricio Zenklussen</strong> — Argentine-born, Chilean-raised, American-educated. Writer, designer, researcher, and communicator with a decade of experience leading projects across countries, cultures, and disciplines.</p>
           <p>Currently focused on Japan. Open to collaborations, editorial work, and new conversations.</p>
@@ -65,13 +75,14 @@ const renderedPosts = await Promise.all(
 
       <!-- Blog Panel -->
       <div id="panel-blog" style="display: none;">
-        <button class="back-btn" data-back="col2">&larr; BACK</button>
-        <h2 class="panel-title">BLOG</h2>
+        <button class="back-btn" data-back="col2" aria-label="Go back">&larr; BACK</button>
+        <h2 class="panel-title" tabindex="-1">BLOG</h2>
         <div class="filter-bar">
           {categories.map((cat) => (
             <button
               class={`filter-btn ${cat === 'all' ? 'active' : ''}`}
               data-filter={cat}
+              aria-label={`Filter by ${cat}`}
             >
               {cat.toUpperCase()}
             </button>
@@ -82,7 +93,7 @@ const renderedPosts = await Promise.all(
             <li>
               <a href="#" class="post-item" data-post={post.id} data-category={post.data.category}>
                 <span class="post-meta text-muted">
-                  <span>{post.data.date}</span>
+                  <span>{formatDate(post.data.date)}</span>
                   <span class="post-cat">{post.data.category.toUpperCase()}</span>
                 </span>
                 <span class="post-title">{post.data.title}</span>
@@ -94,8 +105,8 @@ const renderedPosts = await Promise.all(
 
       <!-- About This Site Panel -->
       <div id="panel-about-site" style="display: none;">
-        <button class="back-btn" data-back="col2">&larr; BACK</button>
-        <h2 class="panel-title">ABOUT THIS SITE</h2>
+        <button class="back-btn" data-back="col2" aria-label="Go back">&larr; BACK</button>
+        <h2 class="panel-title" tabindex="-1">ABOUT THIS SITE</h2>
         <div class="prose">
           <p>The design of this site is inspired by — and a tribute to — <a href="https://p.cv" target="_blank" rel="noopener">p.cv</a>, the personal site of <strong>Paul Macgregor</strong>. His ultra-minimalist approach, monospaced typography, and elegant simplicity set the foundation for what you see here.</p>
           <p>Built with <a href="https://astro.build" target="_blank" rel="noopener">Astro</a>. Set in IBM Plex Mono.</p>
@@ -104,8 +115,8 @@ const renderedPosts = await Promise.all(
     </section>
 
     <!-- Column 3: Detail -->
-    <article class="col col-3" id="col-3">
-      <button class="back-btn" data-back="col3">&larr; BACK</button>
+    <article class="col col-3" id="col-3" role="region" aria-label="Detail">
+      <button class="back-btn" data-back="col3" aria-label="Go back">&larr; BACK</button>
       <div id="detail-content"></div>
     </article>
   </div>
@@ -127,7 +138,7 @@ const renderedPosts = await Promise.all(
   {renderedPosts.map(({ post, Content }) => (
     <template id={`template-${post.id}`}>
       <div class="prose">
-        <p class="text-muted text-small uppercase" style="margin-bottom: 0.25rem;">{post.data.date}</p>
+        <p class="text-muted text-small uppercase" style="margin-bottom: 0.25rem;">{formatDate(post.data.date)}</p>
         <h1>{post.data.title}</h1>
         {post.data.description && (
           <p class="text-muted" style="margin-bottom: 2rem;">{post.data.description}</p>
@@ -146,7 +157,10 @@ const renderedPosts = await Promise.all(
     import { initContact } from '../scripts/contact';
 
     initNavigation();
-    initScramble(document.getElementById('scramble-target')!);
+    initScramble(
+      document.getElementById('scramble-target')!,
+      document.getElementById('scramble-aria')!
+    );
     initNameScramble(document.getElementById('name-target')!);
     initThemeSwitcher(
       document.getElementById('theme-btn')!,
@@ -187,6 +201,12 @@ const renderedPosts = await Promise.all(
     letter-spacing: 0.04em;
     text-transform: uppercase;
     display: inline-block;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .nav-links a:hover {
+    transform: translateX(2px);
+    opacity: 0.7;
   }
 
   .nav-links a.active {
@@ -208,12 +228,13 @@ const renderedPosts = await Promise.all(
   .meta-btn {
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease, transform 0.2s ease;
     text-align: left;
   }
 
   .meta-btn:hover {
-    opacity: 0.6;
+    opacity: 0.7;
+    transform: translateX(2px);
   }
 
   .meta-btn.active {
@@ -235,6 +256,12 @@ const renderedPosts = await Promise.all(
     letter-spacing: 0.04em;
     text-transform: uppercase;
     font-weight: 700;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .read-more:hover {
+    transform: translateX(2px);
+    opacity: 0.7;
   }
 
   .read-more.active {
@@ -273,6 +300,12 @@ const renderedPosts = await Promise.all(
     display: flex;
     flex-direction: column;
     gap: 0.125rem;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .post-item:hover {
+    transform: translateX(2px);
+    opacity: 0.7;
   }
 
   .post-item.active {

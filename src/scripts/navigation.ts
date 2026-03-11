@@ -39,6 +39,12 @@ function showCol2(panel: Panel) {
   col2El.classList.add('is-visible');
   hideCol3();
   updateNavHighlight();
+
+  const activePanel = panel ? panels[panel] : null;
+  if (activePanel) {
+    const focusTarget = activePanel.querySelector<HTMLElement>('h2[tabindex], a, button');
+    if (focusTarget) focusTarget.focus({ preventScroll: true });
+  }
 }
 
 function hideCol2() {
@@ -80,6 +86,12 @@ function showDetail(id: string) {
   document.querySelectorAll<HTMLElement>('[data-detail-trigger]').forEach((el) => {
     el.classList.toggle('active', el.dataset.detailTrigger === id);
   });
+
+  const heading = detailEl.querySelector<HTMLElement>('h1, h2');
+  if (heading) {
+    heading.setAttribute('tabindex', '-1');
+    heading.focus({ preventScroll: true });
+  }
 
   if (window.innerWidth <= 768) {
     col3El.scrollIntoView({ behavior: 'smooth' });
