@@ -62,6 +62,7 @@ const renderedPosts = await Promise.all(
 
     <!-- Column 2: Content Panel -->
     <section class="col col-2" id="col-2" role="region" aria-label="Content">
+      <div id="col-2-inner">
       <!-- About Panel (summary) -->
       <div id="panel-about" style="display: none;">
         <button class="back-btn" data-back="col2" aria-label="Go back">&larr; BACK</button>
@@ -112,6 +113,7 @@ const renderedPosts = await Promise.all(
           <p>Built with <a href="https://astro.build" target="_blank" rel="noopener">Astro</a>. Set in IBM Plex Mono.</p>
         </div>
       </div>
+      </div>
     </section>
 
     <!-- Column 3: Detail -->
@@ -123,8 +125,8 @@ const renderedPosts = await Promise.all(
 
   <!-- Template: About full text -->
   <template id="template-about-full">
+    <h2 class="panel-title" tabindex="-1">EXTENDED ABOUT</h2>
     <div class="prose">
-      <h1>EXTENDED ABOUT</h1>
       <p>My name is <strong>Patricio Zenklussen</strong>. I was born in Argentina, grew up in Chile, and studied in the United States. These days my attention is on Japan, where craft, research, and a demanding relationship with form can live together. I want to grow there professionally and artistically with patience, continuity, and respect for context.</p>
       <p>I have lived and worked in different places. I adapt through method: <strong>I observe, listen, and adjust.</strong> I try to understand before I conclude. That habit helps me move ideas across cultures without flattening them, and build a practical, global, and precise point of view.</p>
       <p><strong>I work through multiple interests.</strong> I bring them closer with structure and turn them into real outcomes. My core practices are writing, design, communication, and research. From there I work across image, sound, editing, and publishing. I'm drawn to the productive tension between the classical and the digital, the intimate and the public, the editorial and the technical. Diversity is my starting point. What I hold is <strong>high standards</strong> and <strong>consistency</strong>.</p>
@@ -137,15 +139,10 @@ const renderedPosts = await Promise.all(
   <!-- Templates: Blog posts -->
   {renderedPosts.map(({ post, Content }) => (
     <template id={`template-${post.id}`}>
+      <h2 class="panel-title" tabindex="-1">{post.data.title}</h2>
+      <p class="text-muted text-small uppercase" style="margin-bottom: 1.5rem;">{formatDate(post.data.date)}{post.data.description ? ` — ${post.data.description}` : ''}</p>
       <div class="prose">
-        <p class="text-muted text-small uppercase" style="margin-bottom: 0.25rem;">{formatDate(post.data.date)}</p>
-        <h1>{post.data.title}</h1>
-        {post.data.description && (
-          <p class="text-muted" style="margin-bottom: 2rem;">{post.data.description}</p>
-        )}
-        <div class="post-body">
-          <Content />
-        </div>
+        <Content />
       </div>
     </template>
   ))}
@@ -179,11 +176,11 @@ const renderedPosts = await Promise.all(
   .name {
     font-weight: 700;
     letter-spacing: 0.04em;
-    line-height: 1.4;
+    line-height: 1.6;
   }
 
   .subtitle {
-    margin-top: 0.125rem;
+    margin-top: 0.25rem;
     min-height: 1.3em;
   }
 
@@ -247,7 +244,7 @@ const renderedPosts = await Promise.all(
     font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    margin-bottom: 1rem;
+    margin-bottom: 0.25rem;
   }
 
   .read-more {

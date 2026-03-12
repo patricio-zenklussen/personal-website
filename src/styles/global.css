@@ -127,11 +127,12 @@ html[data-theme="paper"] {
   display: flex;
   min-height: 100vh;
   width: 100%;
+  overflow-x: hidden;
 }
 
 .col {
   padding: 2.5rem 2rem;
-  overflow-y: auto;
+  overflow-y: hidden;
   height: 100vh;
   position: sticky;
   top: 0;
@@ -157,10 +158,11 @@ html[data-theme="paper"] {
   min-width: 200px;
   flex-shrink: 0;
   border-left: 1px solid var(--text-muted);
+  padding-top: 8.5rem;
   opacity: 0;
   visibility: hidden;
-  transform: translateX(-10px);
-  transition: opacity 0.35s ease, visibility 0.35s ease, transform 0.35s ease, border-color 0.4s ease;
+  transform: translateX(-6px);
+  transition: opacity 0.2s ease-out, visibility 0.2s ease-out, transform 0.2s ease-out, border-color 0.4s ease;
 }
 
 .col-2.is-visible {
@@ -169,19 +171,40 @@ html[data-theme="paper"] {
   transform: translateX(0);
 }
 
+.col-2.is-closing {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(6px);
+  transition-timing-function: ease-in;
+}
+
 .col-3 {
   flex: 1;
   border-left: 1px solid var(--text-muted);
+  padding-top: 8.5rem;
+  overflow-y: auto;
   opacity: 0;
   visibility: hidden;
-  transform: translateX(-10px);
-  transition: opacity 0.35s ease, visibility 0.35s ease, transform 0.35s ease, border-color 0.4s ease;
+  transform: translateX(-6px);
+  transition: opacity 0.2s ease-out, visibility 0.2s ease-out, transform 0.2s ease-out, border-color 0.4s ease;
 }
 
 .col-3.is-visible {
   opacity: 1;
   visibility: visible;
   transform: translateX(0);
+}
+
+.col-3.is-closing {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(6px);
+  transition-timing-function: ease-in;
+}
+
+#col-2-inner,
+#detail-content {
+  transition: opacity 0.15s ease;
 }
 
 /* =============================================
@@ -337,6 +360,8 @@ html[data-theme="paper"] {
   .col-3 {
     border-left: none;
     border-top: 1px solid var(--text-muted);
+    padding-top: 2.5rem;
+    overflow-y: auto;
     display: none;
   }
 
@@ -349,7 +374,7 @@ html[data-theme="paper"] {
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateX(-10px); }
+    from { opacity: 0; transform: translateX(-6px); }
     to { opacity: 1; transform: translateX(0); }
   }
 
