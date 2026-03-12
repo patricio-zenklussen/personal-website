@@ -147,7 +147,7 @@ _Die Urkatastrophe_ estaba exhibido en la sección de Staff Recommendations de 
 
 ---
 
-<img src="https://substack-post-media.s3.amazonaws.com/public/images/03199472-dad2-4db1-8a2b-ab714b98aa28_600x600.jpeg" alt="Meshuggah - I" style="max-width: 500px; height: auto;" />
+<img src="https://substack-post-media.s3.amazonaws.com/public/images/03199472-dad2-4db1-8a2b-ab714b98aa28_600x600" alt="Meshuggah - I" style="max-width: 500px; height: auto;" />
 
 ### Meshuggah - I
 
