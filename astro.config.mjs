@@ -3,7 +3,7 @@ import sitemap from '@astrojs/sitemap';
 import rehypeExternalLinks from 'rehype-external-links';
 
 export default defineConfig({
-  site: 'https://patriciozenklussen.com',
+  site: 'https://pzf.studio',
   integrations: [sitemap()],
   markdown: {
     rehypePlugins: [
