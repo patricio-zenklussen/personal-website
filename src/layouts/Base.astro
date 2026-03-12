@@ -8,6 +8,8 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  canonical?: string;
+  robotsNoindex?: boolean;
 }
 
 const defaultDescription = 'Patricio Zenklussen — Researcher, Listener, Learner, Writer, Photographer, Reader, Watcher.';
@@ -15,9 +17,13 @@ const {
   title = 'Patricio Zenklussen',
   description = defaultDescription,
   ogImage = '/og.svg',
+  canonical: canonicalProp,
+  robotsNoindex = false,
 } = Astro.props;
+
+const canonicalUrl = canonicalProp ?? (Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined);
 ---
-<html lang="es" data-theme="cyan">
+<html lang="es" data-theme="tealos">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -27,16 +33,45 @@ const {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {robotsNoindex && <meta name="robots" content="noindex, follow" />}
     <title>{title}</title>
     <script is:inline>
       (function() {
-        const t = localStorage.getItem('theme');
-        if (t) document.documentElement.setAttribute('data-theme', t);
+        const aliases = {
+          cyan: 'tealos',
+          amber: 'phospo',
+          p3phos: 'phospo',
+          lavender: 'lavend',
+          paper: 'papers',
+          matrix: 'tealos',
+        };
+        const faviconColors = {
+          tealos: '#e7f8f2',
+          phospo: '#ffeed0',
+          lavend: '#443269',
+          papers: '#2b1b17',
+          catpuc: '#f6e4df',
+          forest: '#f3e8cf',
+        };
+        function setFavicon(theme) {
+          const iconEl = document.querySelector('link[rel="icon"]');
+          if (!iconEl) return;
+          const color = faviconColors[theme] || '#e7f8f2';
+          const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><text x="2" y="26" font-family="monospace" font-size="28" font-weight="700" fill="' + color + '">P</text></svg>';
+          iconEl.href = 'data:image/svg+xml,' + encodeURIComponent(svg);
+        }
+        const stored = localStorage.getItem('theme');
+        const normalized = stored && (aliases[stored] || stored);
+        const theme = normalized || 'tealos';
+        document.documentElement.setAttribute('data-theme', theme);
+        setFavicon(theme);
       })();
     </script>
   </head>

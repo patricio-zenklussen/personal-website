@@ -14,12 +14,17 @@ const state: NavigationState = {
 
 const ANIM_MS = 200;
 const FADE_MS = 150;
+const STACK_NAV_MAX_WIDTH = 1024;
+const STACK_NAV_MEDIA_QUERY =
+  '(max-width: 1024px), ((hover: none) and (pointer: coarse) and (max-width: 1366px))';
 
 let col2El: HTMLElement;
 let col2Inner: HTMLElement;
 let col3El: HTMLElement;
 let panels: Record<string, HTMLElement>;
 let detailEl: HTMLElement;
+let mobileSliderEl: HTMLElement | null = null;
+let mobileViewIndex: number | null = null;
 
 const closeTimers = new Map<HTMLElement, number>();
 let sequenceTimer: number | null = null;
@@ -60,6 +65,30 @@ function closeColumn(el: HTMLElement) {
 
 function isCol3Open() {
   return col3El.classList.contains('is-visible');
+}
+
+function isStackNavigationViewport() {
+  return window.matchMedia(STACK_NAV_MEDIA_QUERY).matches || window.innerWidth <= STACK_NAV_MAX_WIDTH;
+}
+
+function updateMobileView() {
+  if (!isStackNavigationViewport()) {
+    mobileViewIndex = null;
+    if (mobileSliderEl) {
+      mobileSliderEl.removeAttribute('data-mobile-view');
+      mobileSliderEl.removeAttribute('data-mobile-direction');
+    }
+    return;
+  }
+  if (!mobileSliderEl) return;
+  const index =
+    state.activeDetail !== null ? 2 : state.activePanel !== null ? 1 : 0;
+  if (mobileViewIndex !== null && index !== mobileViewIndex) {
+    const direction = index > mobileViewIndex ? 'forward' : 'back';
+    mobileSliderEl.setAttribute('data-mobile-direction', direction);
+  }
+  mobileSliderEl.setAttribute('data-mobile-view', String(index));
+  mobileViewIndex = index;
 }
 
 function clearDetailHighlights() {
@@ -131,6 +160,7 @@ function showCol2(panel: Panel) {
     openColumn(col2El);
     focusPanel(panel);
   }
+  updateMobileView();
 }
 
 function hideCol2() {
@@ -146,17 +176,24 @@ function hideCol2() {
       sequenceTimer = null;
       closeColumn(col2El);
       updateNavHighlight();
+      updateMobileView();
     }, ANIM_MS);
   } else {
     closeColumn(col2El);
     updateNavHighlight();
+    updateMobileView();
   }
+}
+
+export function goHome() {
+  hideCol2();
 }
 
 function hideCol3() {
   state.activeDetail = null;
   closeColumn(col3El);
   clearDetailHighlights();
+  updateMobileView();
 }
 
 function showDetail(id: string) {
@@ -183,6 +220,8 @@ function showDetail(id: string) {
       heading.setAttribute('tabindex', '-1');
       heading.focus({ preventScroll: true });
     }
+
+    col3El.scrollTop = 0;
   };
 
   if (col3WasOpen) {
@@ -196,11 +235,8 @@ function showDetail(id: string) {
   } else {
     loadContent();
     openColumn(col3El);
-
-    if (window.innerWidth <= 768) {
-      col3El.scrollIntoView({ behavior: 'smooth' });
-    }
   }
+  updateMobileView();
 }
 
 function filterPosts(category: string) {
@@ -235,12 +271,12 @@ export function initNavigation() {
       e.preventDefault();
       const target = link.dataset.nav as Panel;
       showCol2(target);
-
-      if (window.innerWidth <= 768 && state.activePanel) {
-        col2El.scrollIntoView({ behavior: 'smooth' });
-      }
     });
   });
+
+  mobileSliderEl = document.getElementById('mobile-slider');
+  updateMobileView();
+  window.addEventListener('resize', updateMobileView);
 
   document.addEventListener('click', (e) => {
     const target = (e.target as HTMLElement).closest<HTMLElement>('[data-post]');

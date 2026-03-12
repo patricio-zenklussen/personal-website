@@ -12,6 +12,7 @@ const posts = import.meta.env.PROD
 
 const categories = ['all', ...new Set(posts.map((p) => p.data.category))];
 
+
 function formatDate(dateStr: string): string {
   const d = new Date(dateStr);
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
@@ -26,25 +27,28 @@ const renderedPosts = await Promise.all(
 ---
 <Base>
   <div class="site-wrapper">
+    <div class="mobile-slider" id="mobile-slider" data-mobile-view="0">
     <!-- Column 1: Menu -->
     <nav class="col col-1">
       <div class="col-1-top">
-        <div class="identity">
-          <p class="name" id="name-target">PATRICIO ZENKLUSSEN</p>
-          <p class="subtitle text-muted" id="scramble-target" aria-hidden="true">RESEARCHER</p>
-          <span id="scramble-aria" class="sr-only" aria-live="polite">RESEARCHER</span>
+        <div class="col-1-header">
+          <div class="identity">
+            <p class="name" id="name-target">PATRICIO ZENKLUSSEN</p>
+            <p class="subtitle text-muted" id="scramble-target" aria-hidden="true">RESEARCHER</p>
+            <span id="scramble-aria" class="sr-only" aria-live="polite">RESEARCHER</span>
+          </div>
         </div>
 
-        <ul class="nav-links">
+        <ul class="nav-links nav-group-main">
           <li><a href="#" data-nav="about">ABOUT</a></li>
           <li><a href="#" data-nav="blog">BLOG</a></li>
         </ul>
 
-        <ul class="nav-links">
+        <ul class="nav-links nav-contact">
           <li><a href="#" id="contact-link" aria-label="Contact via email">CONTACT</a></li>
         </ul>
 
-        <ul class="nav-links">
+        <ul class="nav-links nav-group-external">
           <li><a href="https://www.instagram.com/man.withscythe/" target="_blank" rel="noopener">INSTAGRAM</a></li>
           <li><a href="https://www.linkedin.com/in/patozf/" target="_blank" rel="noopener">LINKEDIN</a></li>
           <li><a href="https://www.goodreads.com/user/show/67444676-patricio-zenklussen" target="_blank" rel="noopener">GOODREADS</a></li>
@@ -53,9 +57,9 @@ const renderedPosts = await Promise.all(
       </div>
 
       <div class="col-1-bottom">
-        <button class="meta-btn" data-nav="about-site" aria-label="About this site">ABOUT THIS SITE</button>
+        <button class="meta-btn" data-nav="about-site" aria-label="This site">THIS SITE</button>
         <button class="meta-btn" id="theme-btn" aria-label="Toggle theme">
-          THEME: <span id="theme-label">CYAN</span>
+          THEME: <span id="theme-label">TEALOS</span>
         </button>
       </div>
     </nav>
@@ -68,9 +72,12 @@ const renderedPosts = await Promise.all(
         <button class="back-btn" data-back="col2" aria-label="Go back">&larr; BACK</button>
         <h2 class="panel-title" tabindex="-1">ABOUT</h2>
         <div class="prose">
-          <p><strong>Patricio Zenklussen</strong> — Argentine-born, Chilean-raised, American-educated. Writer, designer, researcher, and communicator with a decade of experience leading projects across countries, cultures, and disciplines.</p>
-          <p>Currently focused on Japan. Open to collaborations, editorial work, and new conversations.</p>
-          <a href="#" class="read-more" data-detail-trigger="about-full">READ MORE &rarr;</a>
+          <p>Argentine-born, Chilean-raised, Globally-educated. Journalist, cultural researcher, and writer with a decade of experience working across art, media, and public life.</p>
+          <p>Currently focusing on Japan. Working on photography, writing, and the question of how art reaches people.</p>
+          <div class="read-more-group">
+            <a href="#" class="read-more" data-detail-trigger="about-full">READ MORE &rarr;</a>
+            <a href="#" class="read-more" data-detail-trigger="cv-full">CV &rarr;</a>
+          </div>
         </div>
       </div>
 
@@ -103,14 +110,19 @@ const renderedPosts = await Promise.all(
           ))}
         </ul>
       </div>
+      <p class="blog-language-note text-muted text-small">
+        Most posts here were written in Spanish, my native language. If you would prefer to read them in another language, feel free to use any translator you like, or email me and I will be happy to share a version directly.
+      </p>
 
       <!-- About This Site Panel -->
       <div id="panel-about-site" style="display: none;">
         <button class="back-btn" data-back="col2" aria-label="Go back">&larr; BACK</button>
-        <h2 class="panel-title" tabindex="-1">ABOUT THIS SITE</h2>
+        <h2 class="panel-title" tabindex="-1">THIS SITE</h2>
         <div class="prose">
-          <p>The design of this site is inspired by — and a tribute to — <a href="https://p.cv" target="_blank" rel="noopener">p.cv</a>, the personal site of <strong>Paul Macgregor</strong>. His ultra-minimalist approach, monospaced typography, and elegant simplicity set the foundation for what you see here.</p>
-          <p>Built with <a href="https://astro.build" target="_blank" rel="noopener">Astro</a>. Set in IBM Plex Mono.</p>
+          <p>This site is a direct tribute to <a href="https://p.cv" target="_blank" rel="noopener">p.cv</a>, the personal site of <strong>Paul Macgregor</strong>. Its structure, rotating themes, and overall design language are closely derived from his work, which I gratefully acknowledge as the original source and inspiration behind this site.</p>
+          <p>Built with <a href="https://astro.build" target="_blank" rel="noopener">Astro</a>.</p>
+          <p>Set in IBM Plex Mono.</p>
+          <p>Made in Argentina and Japan during 2026.</p>
         </div>
       </div>
       </div>
@@ -121,26 +133,78 @@ const renderedPosts = await Promise.all(
       <button class="back-btn" data-back="col3" aria-label="Go back">&larr; BACK</button>
       <div id="detail-content"></div>
     </article>
+    </div>
   </div>
 
   <!-- Template: About full text -->
   <template id="template-about-full">
     <h2 class="panel-title" tabindex="-1">EXTENDED ABOUT</h2>
     <div class="prose">
-      <p>My name is <strong>Patricio Zenklussen</strong>. I was born in Argentina, grew up in Chile, and studied in the United States. These days my attention is on Japan, where craft, research, and a demanding relationship with form can live together. I want to grow there professionally and artistically with patience, continuity, and respect for context.</p>
+      <p>My name is <strong>Patricio Zenklussen</strong>. I was born in Argentina, grew up in Chile, and studied in the United States. These days my attention is on Japan, where craft, research, and a demanding relationship with form can live together. I want to grow there professionally and artistically — with patience, continuity, and respect for context.</p>
       <p>I have lived and worked in different places. I adapt through method: <strong>I observe, listen, and adjust.</strong> I try to understand before I conclude. That habit helps me move ideas across cultures without flattening them, and build a practical, global, and precise point of view.</p>
-      <p><strong>I work through multiple interests.</strong> I bring them closer with structure and turn them into real outcomes. My core practices are writing, design, communication, and research. From there I work across image, sound, editing, and publishing. I'm drawn to the productive tension between the classical and the digital, the intimate and the public, the editorial and the technical. Diversity is my starting point. What I hold is <strong>high standards</strong> and <strong>consistency</strong>.</p>
-      <p>Over the last decade <strong>I have led projects in private-sector environments and academic spaces</strong>, and led teams working across many different countries. I have worked across communication and image-making, digital marketing, design, university teaching, and content production.</p>
+      <p>Art and music have been constants in my work. I spent years writing about both — covering jazz, classical, and popular music, interviewing artists across disciplines, finding language for things that resist it. That work left me with a question I haven't stopped asking: <strong>what happens in the space between a work and its public?</strong> Who shapes that encounter, and how? I don't have a fixed answer. But it's the question that keeps organizing everything else.</p>
+      <p><strong>I work through multiple interests.</strong> My core practices are writing, research, and image-making. From there I work across sound, editing, design, and publishing. I'm drawn to the tension between the classical and the digital, the intimate and the public, the editorial and the technical. Over the last decade I've led projects in academic and professional environments — journalism, cultural criticism, university teaching, communications.</p>
       <p><strong>How I work:</strong> I ask, document, organize, and edit. I build structure before I look for effects. I care about hierarchy, tone, and rhythm. I use technology with intention. I deliver with consistency. I care that the work is clear for real audiences and that it carries public value.</p>
-      <p>Lately, <strong>I have been deepening this personal space</strong> to develop essays, notes, lists, and photo essays. I'm open to collaborations and to working with magazines and media outlets. In everyday life, I rely on simple things: family and friends, pour-over coffee, and silence.</p>
+      <p>I run <strong>ROMPÉ EL VIDRIO</strong> (<a href="https://rompeelvidrio.substack.com" target="_blank" rel="noopener">rompeelvidrio.substack.com</a>) — a publication that crosses photography, music criticism, memory, and short fiction. It's where I work without a brief and without an expected form. It keeps me honest.</p>
+      <p>In everyday life, I rely on simple things: family and friends, pour-over coffee, and silence.</p>
+    </div>
+  </template>
+
+  <!-- Template: CV full -->
+  <template id="template-cv-full">
+    <h2 class="panel-title" tabindex="-1">FULL CV</h2>
+    <div class="prose">
+      <h2>EDUCATION</h2>
+      <p><strong>Master of Arts — Journalism, Studio 20: Digital First</strong><br />
+      <span class="text-muted">New York University · 2019–2021</span><br />
+      GPA 4.0 · Photojournalism · Multimedia Storytelling · Audience-Centric Reporting</p>
+      <p><strong>Bachelor of Arts — Social Communication</strong><br />
+      <span class="text-muted">Universidad Adolfo Ibañez, Santiago · 2013–2017</span><br />
+      Graduated first in cohort — Academic Excellence Award</p>
+      <p><strong>Diploma in Music Appreciation</strong><br />
+      <span class="text-muted">Universidad Adolfo Ibañez · 2018</span><br />
+      Music history, aesthetics, and critical listening — grounding for cross-disciplinary practice.</p>
+      <p><strong>Diploma in Digital Music Production</strong><br />
+      <span class="text-muted">Instituto Profesional ProJazz, Santiago · 2018</span><br />
+      Music production and sound design — developing sensitivity to sonic art as a curatorial field.</p>
+      <hr />
+      <h2>EXPERIENCE</h2>
+      <p><strong>Head of Communications & Image</strong><br />
+      <span class="text-muted">ALO Group, Santiago · 2018–2025</span><br />
+      Led communications and brand strategy for a heavy equipment company across six countries in Latin America, managing a team of journalists, designers, and writers.</p>
+      <p><strong>University Lecturer — Argumentative Writing</strong><br />
+      <span class="text-muted">Universidad Adolfo Ibañez · 2021–2023</span><br />
+      Taught critical writing through engagement with masterworks across painting, sculpture, literature, and other art forms — developing students' capacity for analytical and argumentative text. Previously teaching assistant in journalism, oral communication, and data journalism (2015–2021).</p>
+      <p><strong>Journalist — Arts & Culture</strong><br />
+      <span class="text-muted">El Mercurio, Santiago · 2017–2019</span><br />
+      Reported on music and visual arts for Chile's most widely read newspaper. Conducted in-depth interviews with artists across disciplines — including Diana Krall, Rod Stewart, and Hiromi Uehara.</p>
+      <hr />
+      <h2>SKILLS</h2>
+      <p><strong>Writing & Research</strong><br />
+      Long-form journalism · cultural criticism · academic writing · essay · editing</p>
+      <p><strong>Photography</strong><br />
+      Documentary and street photography · editorial photo essays · digital darkroom</p>
+      <p><strong>Audio & Music</strong><br />
+      Music production · sound design · audio editing (Logic, Ableton) · critical listening</p>
+      <p><strong>Video & AV</strong><br />
+      Video editing · audiovisual experience creation · multimedia storytelling</p>
+      <p><strong>Design</strong><br />
+      Graphic design · visual identity · Adobe Creative Suite · print and digital layout</p>
+      <p><strong>Languages</strong><br />
+      Spanish (native) · English (full professional, NYU MA) · Japanese (beginner)</p>
     </div>
   </template>
 
   <!-- Templates: Blog posts -->
   {renderedPosts.map(({ post, Content }) => (
     <template id={`template-${post.id}`}>
-      <h2 class="panel-title" tabindex="-1">{post.data.title}</h2>
-      <p class="text-muted text-small uppercase" style="margin-bottom: 1.5rem;">{formatDate(post.data.date)}{post.data.description ? ` — ${post.data.description}` : ''}</p>
+      <div class="post-header">
+        <h2 class="panel-title" tabindex="-1">{post.data.title}</h2>
+        <p class="post-meta-line text-muted text-small uppercase">{formatDate(post.data.date)}</p>
+        {post.data.description ? (
+          <p class="post-lead">{post.data.description}</p>
+        ) : null}
+      </div>
       <div class="prose">
         <Content />
       </div>
@@ -150,7 +214,7 @@ const renderedPosts = await Promise.all(
   <script>
     import { initScramble, initNameScramble } from '../scripts/scramble';
     import { initThemeSwitcher } from '../scripts/theme';
-    import { initNavigation } from '../scripts/navigation';
+    import { initNavigation, goHome } from '../scripts/navigation';
     import { initContact } from '../scripts/contact';
 
     initNavigation();
@@ -158,7 +222,9 @@ const renderedPosts = await Promise.all(
       document.getElementById('scramble-target')!,
       document.getElementById('scramble-aria')!
     );
-    initNameScramble(document.getElementById('name-target')!);
+    const nameEl = document.getElementById('name-target')!;
+    initNameScramble(nameEl);
+    nameEl.addEventListener('click', goHome);
     initThemeSwitcher(
       document.getElementById('theme-btn')!,
       document.getElementById('theme-label')!
@@ -168,47 +234,74 @@ const renderedPosts = await Promise.all(
 </Base>
 
 <style>
-  /* ---- Col 1: Identity ---- */
+  /* ---- Col 1: Identity (inside header) ---- */
+  .col-1-header .identity {
+    margin-bottom: 0;
+  }
+
   .identity {
-    margin-bottom: 2.5rem;
+    margin-bottom: var(--space-block);
   }
 
   .name {
     font-weight: 700;
-    letter-spacing: 0.04em;
-    line-height: 1.6;
+    letter-spacing: var(--tracking-title);
+    line-height: var(--lh-ui);
     color: var(--text-heading);
+    transition: color 320ms ease-out;
+  }
+
+  .name.name-easter-active {
+    color: var(--accent);
   }
 
   .subtitle {
-    margin-top: 0.25rem;
+    margin-top: var(--space-2xs);
     min-height: 1.3em;
   }
 
-  /* ---- Col 1: Nav links ---- */
+  /* ---- Col 1: Nav links (grouped: main, contact, external, footer) ---- */
   .nav-links {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-group);
+  }
+
+  .nav-group-main {
+    margin-bottom: var(--space-group);
+  }
+
+  .nav-contact {
+    margin-top: var(--space-mid);
+    margin-bottom: var(--space-mid);
+  }
+
+  .nav-group-external {
+    margin-bottom: var(--space-group);
   }
 
   .nav-links li {
-    margin-bottom: 0.125rem;
+    margin-bottom: var(--space-item);
   }
 
   .nav-links a,
   .nav-links button {
-    letter-spacing: 0.04em;
+    letter-spacing: var(--tracking-ui);
     text-transform: uppercase;
     display: inline-block;
     transition: opacity 0.2s ease, transform 0.2s ease;
+    color: var(--text);
   }
 
   .nav-links a:hover {
     transform: translateX(2px);
-    opacity: 0.7;
+    opacity: 0.9;
+    color: var(--text-heading);
   }
 
   .nav-links a.active {
-    opacity: 0.5;
+    opacity: 1;
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   /* ---- Col 1: Bottom ---- */
@@ -217,42 +310,61 @@ const renderedPosts = await Promise.all(
   }
 
   .col-1-bottom {
-    padding-top: 1rem;
+    padding-top: var(--space-group);
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: var(--space-item);
   }
 
   .meta-btn {
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--tracking-ui);
     transition: opacity 0.2s ease, transform 0.2s ease;
     text-align: left;
   }
 
   .meta-btn:hover {
-    opacity: 0.7;
+    opacity: 0.9;
     transform: translateX(2px);
+    color: var(--text-heading);
   }
 
   .meta-btn.active {
-    opacity: 0.5;
+    opacity: 1;
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   /* ---- Col 2: Panels ---- */
   .panel-title {
     font-size: 1rem;
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--tracking-title);
     text-transform: uppercase;
-    margin-bottom: 0.25rem;
+    margin-bottom: var(--space-xs);
     color: var(--text-heading);
+  }
+
+  /* ---- Col 3: Post header (date + lead) ---- */
+  .post-meta-line {
+    margin-bottom: var(--space-sm);
+    letter-spacing: var(--tracking-ui);
+  }
+
+  .post-lead {
+    font-size: 1rem;
+    line-height: var(--lh-prose);
+    color: var(--text-heading);
+    margin-bottom: var(--space-lg);
+    letter-spacing: var(--tracking-body);
+    font-weight: 400;
   }
 
   .read-more {
     display: inline-block;
-    margin-top: 0.5rem;
-    letter-spacing: 0.04em;
+    margin-top: var(--space-xs);
+    letter-spacing: var(--tracking-ui);
     text-transform: uppercase;
     font-weight: 700;
     color: var(--accent);
@@ -265,21 +377,30 @@ const renderedPosts = await Promise.all(
   }
 
   .read-more.active {
-    opacity: 0.5;
+    opacity: 1;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .read-more-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
   }
 
   /* ---- Col 2: Blog ---- */
   .filter-bar {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
   }
 
   .filter-btn {
-    letter-spacing: 0.04em;
+    letter-spacing: var(--tracking-ui);
     text-transform: uppercase;
-    transition: opacity 0.2s ease;
+    transition: color 0.2s ease, opacity 0.2s ease;
     color: var(--text-muted);
   }
 
@@ -290,10 +411,12 @@ const renderedPosts = await Promise.all(
   .filter-btn.active {
     color: var(--accent);
     font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .post-list li {
-    margin-bottom: 0.75rem;
+    margin-bottom: var(--space-sm);
   }
 
   .post-item {
@@ -305,21 +428,46 @@ const renderedPosts = await Promise.all(
 
   .post-item:hover {
     transform: translateX(2px);
-    opacity: 0.7;
+    opacity: 0.9;
   }
 
   .post-item.active {
-    opacity: 0.5;
+    opacity: 1;
   }
 
   .post-meta {
     display: flex;
-    gap: 1rem;
+    gap: var(--space-md);
     font-size: 0.8rem;
+    letter-spacing: var(--tracking-body);
   }
 
   .post-title {
-    letter-spacing: 0.02em;
+    letter-spacing: var(--tracking-body);
     color: var(--text-heading);
+  }
+
+  .post-item.active .post-title {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  #panel-blog {
+    padding-bottom: 11rem;
+  }
+
+  .blog-language-note {
+    display: none;
+    position: absolute;
+    left: var(--space-col-x);
+    right: var(--space-col-x);
+    bottom: var(--space-col-y);
+    max-width: 32ch;
+    line-height: var(--lh-prose);
+  }
+
+  .col-2:has(#panel-blog[style*='block']) .blog-language-note {
+    display: block;
   }
 </style>

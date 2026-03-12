@@ -72,9 +72,10 @@ export function initScramble(el: HTMLElement, ariaEl?: HTMLElement) {
 }
 
 const NAME = 'PATRICIO ZENKLUSSEN';
-const EASTER_EGG = "YOU LIKE CLICKING, DON'T YOU?";
-const CLICK_THRESHOLD = 5;
-const EASTER_EGG_DURATION = 10000;
+const EASTER_EGG = 'LIKE CLICKING?';
+const CLICK_THRESHOLD = 3;
+const EASTER_EGG_DURATION = 3000;
+const EASTER_CLASS = 'name-easter-active';
 
 export function initNameScramble(el: HTMLElement) {
   let clickCount = 0;
@@ -90,10 +91,15 @@ export function initNameScramble(el: HTMLElement) {
     if (clickCount >= CLICK_THRESHOLD) {
       locked = true;
       clickCount = 0;
-      await scrambleTo(el, EASTER_EGG);
-      await new Promise((r) => setTimeout(r, EASTER_EGG_DURATION));
-      await scrambleTo(el, NAME);
-      locked = false;
+      el.classList.add(EASTER_CLASS);
+      try {
+        await scrambleTo(el, EASTER_EGG);
+        await new Promise((r) => setTimeout(r, EASTER_EGG_DURATION));
+        await scrambleTo(el, NAME);
+      } finally {
+        el.classList.remove(EASTER_CLASS);
+        locked = false;
+      }
     } else {
       locked = true;
       await scrambleTo(el, NAME);

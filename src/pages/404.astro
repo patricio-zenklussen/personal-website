@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-<Base title="404">
+<Base title="404" robotsNoindex>
   <div class="page-404">
     <h1>404</h1>
     <p>Nothing here.</p>
@@ -18,22 +18,30 @@ import Base from '../layouts/Base.astro';
     min-height: 100vh;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--tracking-ui);
+    line-height: var(--lh-ui);
+    padding: var(--space-col-y) var(--space-col-x);
   }
 
   .page-404 h1 {
     font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-md);
+    letter-spacing: var(--tracking-title);
+    color: var(--text-heading);
   }
 
   .page-404 p {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-lg);
     color: var(--text-muted);
+    max-width: 36ch;
   }
 
   .page-404 a {
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--tracking-ui);
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 </style>
