@@ -71,7 +71,7 @@ export function initScramble(el: HTMLElement, ariaEl?: HTMLElement) {
   setTimeout(() => loop(), PAUSE_BETWEEN);
 }
 
-const NAME = 'PATRICIO ZENKLUSSEN';
+const NAME = 'PATRICIO ZENKLUSSEN F.';
 const EASTER_EGG = 'LIKE CLICKING?';
 const CLICK_THRESHOLD = 3;
 const EASTER_EGG_DURATION = 3000;

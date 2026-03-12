@@ -11,8 +11,8 @@ export async function GET(context: APIContext) {
   const published = import.meta.env.PROD ? sorted.filter((p) => !p.data.draft) : sorted;
 
   return rss({
-    title: 'Patricio Zenklussen Franco',
-    description: 'Personal site and blog — Patricio Zenklussen Franco',
+    title: 'Patricio Zenklussen F.',
+    description: 'Personal site and blog — Patricio Zenklussen F.',
     site: context.site!.toString(),
     items: published.map((post) => ({
       title: post.data.title,
