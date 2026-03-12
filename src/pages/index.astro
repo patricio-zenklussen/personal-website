@@ -177,6 +177,7 @@ const renderedPosts = await Promise.all(
     font-weight: 700;
     letter-spacing: 0.04em;
     line-height: 1.6;
+    color: var(--text-heading);
   }
 
   .subtitle {
@@ -245,6 +246,7 @@ const renderedPosts = await Promise.all(
     letter-spacing: 0.04em;
     text-transform: uppercase;
     margin-bottom: 0.25rem;
+    color: var(--text-heading);
   }
 
   .read-more {
@@ -253,6 +255,7 @@ const renderedPosts = await Promise.all(
     letter-spacing: 0.04em;
     text-transform: uppercase;
     font-weight: 700;
+    color: var(--accent);
     transition: opacity 0.2s ease, transform 0.2s ease;
   }
 
@@ -285,7 +288,7 @@ const renderedPosts = await Promise.all(
   }
 
   .filter-btn.active {
-    color: var(--text);
+    color: var(--accent);
     font-weight: 700;
   }
 
@@ -317,5 +320,6 @@ const renderedPosts = await Promise.all(
 
   .post-title {
     letter-spacing: 0.02em;
+    color: var(--text-heading);
   }
 </style>
