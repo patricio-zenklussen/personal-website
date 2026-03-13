@@ -917,6 +917,22 @@ html[data-theme="amoled"] {
   display: block;
 }
 
+/* Mobile override: keep disclaimer below post list */
+@media (max-width: 1024px), ((hover: none) and (pointer: coarse) and (max-width: 1366px)) {
+  .site-wrapper #panel-blog {
+    padding-bottom: 0;
+  }
+
+  .site-wrapper .blog-language-note {
+    position: static;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin-top: var(--space-2xl);
+    margin-bottom: max(var(--space-col-y), env(safe-area-inset-bottom));
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
