@@ -70,8 +70,7 @@ const canonicalUrl = canonicalProp ?? (Astro.site ? new URL(Astro.url.pathname, 
         }
         const stored = localStorage.getItem('theme');
         const normalized = stored && (aliases[stored] || stored);
-        const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-        const theme = normalized || (prefersLight ? 'papers' : 'tealos');
+        const theme = normalized || 'amoled';
         document.documentElement.setAttribute('data-theme', theme);
         setFavicon(theme);
       })();

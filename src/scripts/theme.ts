@@ -43,10 +43,7 @@ function normalizeTheme(value: string | null): Theme | null {
 function getCurrentTheme(): Theme {
   const normalized = normalizeTheme(localStorage.getItem('theme'));
   if (normalized) return normalized;
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-    return 'papers';
-  }
-  return 'tealos';
+  return 'amoled';
 }
 
 function applyTheme(theme: Theme) {
