@@ -504,11 +504,14 @@ html[data-theme="amoled"] {
 @media (max-width: 1024px), ((hover: none) and (pointer: coarse) and (max-width: 1366px)) {
   html {
     font-size: 16px;
+  }
+
+  html:has(body .mobile-slider) {
     overflow: hidden;
     height: 100%;
   }
 
-  body {
+  body:has(.mobile-slider) {
     overflow: hidden;
     height: 100%;
     min-height: 100dvh;
