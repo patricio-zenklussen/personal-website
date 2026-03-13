@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://patriciozenklussen.com/sitemap-index.xml
+Sitemap: https://pzf.studio/sitemap-index.xml

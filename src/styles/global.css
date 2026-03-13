@@ -188,6 +188,21 @@ html[data-theme="forest"] {
   --selection-text: #162018;
 }
 
+html[data-theme="amoled"] {
+  --bg: #000000;
+  --text: #d6d6d6;
+  --text-heading: #ffffff;
+  --text-muted: #9a9a9a;
+  --accent: #f0f0f0;
+  --text-prose: #c9c9c9;
+  --surface: #0a0a0a;
+  --border-strong: #2f2f2f;
+  --link: #e7e7e7;
+  --focus-ring: #ffffff;
+  --selection-bg: #bfbfbf;
+  --selection-text: #000000;
+}
+
 /* =============================================
    Typography helpers
    ============================================= */

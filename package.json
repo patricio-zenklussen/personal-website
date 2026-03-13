@@ -3,9 +3,9 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview"
+    "dev": "env -u npm_config_devdir astro dev",
+    "build": "env -u npm_config_devdir astro build",
+    "preview": "env -u npm_config_devdir astro preview"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.17",

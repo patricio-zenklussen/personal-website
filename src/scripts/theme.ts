@@ -1,6 +1,6 @@
-const THEMES = ['tealos', 'phospo', 'lavend', 'papers', 'catpuc', 'forest'] as const;
+const THEMES = ['tealos', 'phospo', 'lavend', 'papers', 'catpuc', 'forest', 'amoled'] as const;
 type Theme = (typeof THEMES)[number];
-const THEME_ROTATION: Theme[] = ['tealos', 'phospo', 'lavend', 'papers', 'catpuc', 'forest'];
+const THEME_ROTATION: Theme[] = ['tealos', 'phospo', 'lavend', 'papers', 'catpuc', 'forest', 'amoled'];
 const ROTATION_INDEX_KEY = 'theme-rotation-index';
 
 const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -23,6 +23,7 @@ const FAVICON_COLORS: Record<Theme, string> = {
   papers: '#2b1b17',
   catpuc: '#f6e4df',
   forest: '#f3e8cf',
+  amoled: '#f5f5f5',
 };
 
 function updateFavicon(theme: Theme) {
@@ -42,6 +43,9 @@ function normalizeTheme(value: string | null): Theme | null {
 function getCurrentTheme(): Theme {
   const normalized = normalizeTheme(localStorage.getItem('theme'));
   if (normalized) return normalized;
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+    return 'papers';
+  }
   return 'tealos';
 }
 

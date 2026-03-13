@@ -22,7 +22,7 @@ Little Lucía got into bed, covered herself and fell asleep.
 
 --
 
-"Dear God,
+"Dear God,  
 Take me home."
 
 Private Gómez spat blood, clutched the sand and closed his eyes forever.
