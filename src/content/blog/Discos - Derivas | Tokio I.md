@@ -3,7 +3,7 @@ title: "Discos/Derivas | Tokio I"
 date: "2026-02-24"
 description: "Descubrimientos y reencuentros musicales en las disquerías de la capital japonesa, con el ojo puesto en el metal."
 category: "notes"
-tags: ["series:discos/derivas"]
+tags: ["series:discos-derivas"]
 ---
 
 Tokio es un lugar lleno de música. Es una ciudad tremendamente estimulante y en lo sonoro no se queda atrás. Desde los efectos en los pasos cebra y los jingles de las estaciones de metro, pasando por la música frenética de los arcade y pachinko y el furor del J y K pop que emerge de Tower Records, hasta los discos de vinilo en los kissa y la música clásica en los grandes salones de concierto. Hay música siempre y en todos lados. Y para mi se vuelve inevitable no sentirme atraído e influenciado por esto y querer lanzarme a explorar todos estos lugares, en busca de la parte que me toca.

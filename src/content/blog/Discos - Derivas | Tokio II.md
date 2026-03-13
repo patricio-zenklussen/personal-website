@@ -3,7 +3,7 @@ title: "Discos/Derivas | Tokio II"
 date: "2026-03-05"
 description: "Exploraciones musicales profundas. Atrás el metal: se abre el oído a pop, jazz, progresivo y algunas experimentaciones muy especiales."
 category: "notes"
-tags: ["series:discos/derivas"]
+tags: ["series:discos-derivas"]
 ---
 
 A medida que he seguido explorando la ciudad y sus record stores, ha ido aumentando también la cantidad de discos que he conseguido. Pensaba días atrás que la creación de estos artículos era, si no me apuraba, una carrera interminable: soy definitivamente más ~~consumista~~ curioso que productivo. Una versión más cotidiana de [Aquiles y la tortuga.](https://es.wikipedia.org/wiki/Paradojas_de_Zen%C3%B3n?useskin=vector#Aquiles_y_la_tortuga) Lo que empezó siendo una lista de 18 discos, hoy supera los 30, así que amerita dejar de dar vueltas y pasar a revisar los nuevos hallazgos.
