@@ -1,0 +1,169 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const published = import.meta.env.PROD
+    ? posts.filter((p) => !p.data.draft)
+    : posts;
+  return published.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const allPosts = (await getCollection('blog')).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+const posts = import.meta.env.PROD
+  ? allPosts.filter((p) => !p.data.draft)
+  : allPosts;
+const currentIndex = posts.findIndex((p) => p.id === post.id);
+const previousPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
+const nextPost =
+  currentIndex >= 0 && currentIndex < posts.length - 1
+    ? posts[currentIndex + 1]
+    : null;
+
+function formatDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
+}
+
+const { Content } = await render(post);
+---
+<Base
+  title={`${post.data.title} | Patricio Zenklussen F.`}
+  description={post.data.description ?? post.data.title}
+>
+  <main class="post-page">
+    <header class="post-page-header">
+      <a href="/" class="post-name-link">PATRICIO ZENKLUSSEN F.</a>
+      <div class="post-header-actions">
+        <a href="/" class="post-home-link" aria-label="Go to home">HOME</a>
+        <button class="post-theme-btn" id="theme-btn" aria-label="Toggle theme">
+          THEME: <span id="theme-label">TEALOS</span>
+        </button>
+      </div>
+    </header>
+
+    <article class="post-page-content">
+      <div id="detail-content">
+        <div class="post-header">
+          <h2 class="panel-title" tabindex="-1">{post.data.title}</h2>
+          <p class="post-meta-line text-muted text-small uppercase">{formatDate(post.data.date)}</p>
+          {post.data.description ? <p class="post-lead">{post.data.description}</p> : null}
+        </div>
+        <div class="prose">
+          <Content />
+        </div>
+        <nav class="post-pagination" aria-label="Post navigation">
+          <span class="post-pagination-item">
+            {previousPost ? (
+              <a href={`/blog/${encodeURIComponent(previousPost.id)}`}>PREVIOUS</a>
+            ) : (
+              <span class="post-pagination-disabled">PREVIOUS</span>
+            )}
+          </span>
+          <span class="post-pagination-separator">-</span>
+          <span class="post-pagination-item">
+            {nextPost ? (
+              <a href={`/blog/${encodeURIComponent(nextPost.id)}`}>NEXT</a>
+            ) : (
+              <span class="post-pagination-disabled">NEXT</span>
+            )}
+          </span>
+        </nav>
+      </div>
+    </article>
+  </main>
+
+  <script>
+    import { initThemeSwitcher } from '../../scripts/theme';
+    initThemeSwitcher(
+      document.getElementById('theme-btn')!,
+      document.getElementById('theme-label')!
+    );
+  </script>
+</Base>
+
+<style>
+  .post-page {
+    min-height: 100vh;
+    padding: var(--space-col-y) var(--space-col-x);
+  }
+
+  .post-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-2xl);
+    border-bottom: 1px solid var(--border-strong, var(--text-muted));
+    padding-bottom: var(--space-md);
+  }
+
+  .post-name-link {
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-title);
+    font-weight: 700;
+    color: var(--text-heading);
+  }
+
+  .post-header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  .post-home-link,
+  .post-theme-btn {
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-ui);
+  }
+
+  .post-page-content {
+    width: min(100%, 80ch);
+  }
+
+  .post-pagination {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--border-strong, var(--text-muted));
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    letter-spacing: var(--tracking-ui);
+    text-transform: uppercase;
+  }
+
+  .post-pagination a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 700;
+  }
+
+  .post-pagination-disabled {
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+
+  .post-pagination-separator {
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 768px) {
+    .post-page {
+      padding: var(--space-lg) var(--space-md);
+    }
+
+    .post-page-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-sm);
+    }
+  }
+</style>

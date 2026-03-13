@@ -1,15 +1,6 @@
 const THEMES = ['tealos', 'phospo', 'lavend', 'papers', 'catpuc', 'forest'] as const;
 type Theme = (typeof THEMES)[number];
-const THEME_ROTATION: Theme[] = [
-  'tealos',
-  'lavend',
-  'phospo',
-  'papers',
-  'catpuc',
-  'lavend',
-  'forest',
-  'papers',
-];
+const THEME_ROTATION: Theme[] = ['tealos', 'phospo', 'lavend', 'papers', 'catpuc', 'forest'];
 const ROTATION_INDEX_KEY = 'theme-rotation-index';
 
 const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';

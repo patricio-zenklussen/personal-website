@@ -45,7 +45,7 @@ const renderedPosts = await Promise.all(
         </ul>
 
         <ul class="nav-links nav-contact">
-          <li><a href="#" id="contact-link" aria-label="Contact via email">CONTACT</a></li>
+          <li><a href="#" data-nav="contact" aria-label="Open contact panel">CONTACT</a></li>
         </ul>
 
         <ul class="nav-links nav-group-external">
@@ -99,7 +99,7 @@ const renderedPosts = await Promise.all(
         <ul class="post-list">
           {posts.map((post) => (
             <li>
-              <a href="#" class="post-item" data-post={post.id} data-category={post.data.category}>
+              <a href={`/blog/${encodeURIComponent(post.id)}`} class="post-item" data-post={post.id} data-category={post.data.category}>
                 <span class="post-meta text-muted">
                   <span>{formatDate(post.data.date)}</span>
                   <span class="post-cat">{post.data.category.toUpperCase()}</span>
@@ -113,6 +113,17 @@ const renderedPosts = await Promise.all(
       <p class="blog-language-note text-muted text-small">
         Most posts here were written in Spanish, my native language. If you would prefer to read them in another language, feel free to use any translator you like, or email me and I will be happy to share a version directly.
       </p>
+
+      <!-- Contact Panel -->
+      <div id="panel-contact" style="display: none;">
+        <button class="back-btn" data-back="col2" aria-label="Go back">&larr; BACK</button>
+        <h2 class="panel-title" tabindex="-1">CONTACT</h2>
+        <div class="prose">
+          <p>If you want to reach me directly for projects, writing, photography, or collaboration, write me at:</p>
+          <p class="contact-email-display" data-contact-email-text>pzenklussen[at]gmail[dot]com</p>
+          <p><button class="read-more" type="button" data-contact-copy>COPY EMAIL</button></p>
+        </div>
+      </div>
 
       <!-- About This Site Panel -->
       <div id="panel-about-site" style="display: none;">
@@ -199,7 +210,17 @@ const renderedPosts = await Promise.all(
   {renderedPosts.map(({ post, Content }) => (
     <template id={`template-${post.id}`}>
       <div class="post-header">
-        <h2 class="panel-title" tabindex="-1">{post.data.title}</h2>
+        <div class="post-header-top">
+          <h2 class="panel-title" tabindex="-1">{post.data.title}</h2>
+          <a
+            class="post-fullscreen-link"
+            href={`/blog/${encodeURIComponent(post.id)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open full article in a new tab"
+            title="Open in new tab"
+          >↗</a>
+        </div>
         <p class="post-meta-line text-muted text-small uppercase">{formatDate(post.data.date)}</p>
         {post.data.description ? (
           <p class="post-lead">{post.data.description}</p>
@@ -229,245 +250,6 @@ const renderedPosts = await Promise.all(
       document.getElementById('theme-btn')!,
       document.getElementById('theme-label')!
     );
-    initContact(document.getElementById('contact-link')!);
+    initContact(document.getElementById('panel-contact')!);
   </script>
 </Base>
-
-<style>
-  /* ---- Col 1: Identity (inside header) ---- */
-  .col-1-header .identity {
-    margin-bottom: 0;
-  }
-
-  .identity {
-    margin-bottom: var(--space-block);
-  }
-
-  .name {
-    font-weight: 700;
-    letter-spacing: var(--tracking-title);
-    line-height: var(--lh-ui);
-    color: var(--text-heading);
-    transition: color 320ms ease-out;
-  }
-
-  .name.name-easter-active {
-    color: var(--accent);
-  }
-
-  .subtitle {
-    margin-top: var(--space-2xs);
-    min-height: 1.3em;
-  }
-
-  /* ---- Col 1: Nav links (grouped: main, contact, external, footer) ---- */
-  .nav-links {
-    margin-bottom: var(--space-group);
-  }
-
-  .nav-group-main {
-    margin-bottom: var(--space-group);
-  }
-
-  .nav-contact {
-    margin-top: var(--space-mid);
-    margin-bottom: var(--space-mid);
-  }
-
-  .nav-group-external {
-    margin-bottom: var(--space-group);
-  }
-
-  .nav-links li {
-    margin-bottom: var(--space-item);
-  }
-
-  .nav-links a,
-  .nav-links button {
-    letter-spacing: var(--tracking-ui);
-    text-transform: uppercase;
-    display: inline-block;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    color: var(--text);
-  }
-
-  .nav-links a:hover {
-    transform: translateX(2px);
-    opacity: 0.9;
-    color: var(--text-heading);
-  }
-
-  .nav-links a.active {
-    opacity: 1;
-    color: var(--accent);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  /* ---- Col 1: Bottom ---- */
-  .col-1-top {
-    flex: 1;
-  }
-
-  .col-1-bottom {
-    padding-top: var(--space-group);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-item);
-  }
-
-  .meta-btn {
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-ui);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    text-align: left;
-  }
-
-  .meta-btn:hover {
-    opacity: 0.9;
-    transform: translateX(2px);
-    color: var(--text-heading);
-  }
-
-  .meta-btn.active {
-    opacity: 1;
-    color: var(--accent);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  /* ---- Col 2: Panels ---- */
-  .panel-title {
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: var(--tracking-title);
-    text-transform: uppercase;
-    margin-bottom: var(--space-xs);
-    color: var(--text-heading);
-  }
-
-  /* ---- Col 3: Post header (date + lead) ---- */
-  .post-meta-line {
-    margin-bottom: var(--space-sm);
-    letter-spacing: var(--tracking-ui);
-  }
-
-  .post-lead {
-    font-size: 1rem;
-    line-height: var(--lh-prose);
-    color: var(--text-heading);
-    margin-bottom: var(--space-lg);
-    letter-spacing: var(--tracking-body);
-    font-weight: 400;
-  }
-
-  .read-more {
-    display: inline-block;
-    margin-top: var(--space-xs);
-    letter-spacing: var(--tracking-ui);
-    text-transform: uppercase;
-    font-weight: 700;
-    color: var(--accent);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-  }
-
-  .read-more:hover {
-    transform: translateX(2px);
-    opacity: 0.7;
-  }
-
-  .read-more.active {
-    opacity: 1;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  .read-more-group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-xs);
-  }
-
-  /* ---- Col 2: Blog ---- */
-  .filter-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-lg);
-  }
-
-  .filter-btn {
-    letter-spacing: var(--tracking-ui);
-    text-transform: uppercase;
-    transition: color 0.2s ease, opacity 0.2s ease;
-    color: var(--text-muted);
-  }
-
-  .filter-btn:hover {
-    color: var(--text);
-  }
-
-  .filter-btn.active {
-    color: var(--accent);
-    font-weight: 700;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  .post-list li {
-    margin-bottom: var(--space-sm);
-  }
-
-  .post-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.125rem;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-  }
-
-  .post-item:hover {
-    transform: translateX(2px);
-    opacity: 0.9;
-  }
-
-  .post-item.active {
-    opacity: 1;
-  }
-
-  .post-meta {
-    display: flex;
-    gap: var(--space-md);
-    font-size: 0.8rem;
-    letter-spacing: var(--tracking-body);
-  }
-
-  .post-title {
-    letter-spacing: var(--tracking-body);
-    color: var(--text-heading);
-  }
-
-  .post-item.active .post-title {
-    color: var(--accent);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  #panel-blog {
-    padding-bottom: 11rem;
-  }
-
-  .blog-language-note {
-    display: none;
-    position: absolute;
-    left: var(--space-col-x);
-    right: var(--space-col-x);
-    bottom: var(--space-col-y);
-    max-width: 32ch;
-    line-height: var(--lh-prose);
-  }
-
-  .col-2:has(#panel-blog[style*='block']) .blog-language-note {
-    display: block;
-  }
-</style>

@@ -1,4 +1,4 @@
-type Panel = 'about' | 'blog' | 'about-site' | null;
+type Panel = 'about' | 'blog' | 'contact' | 'about-site' | null;
 
 interface NavigationState {
   activePanel: Panel;
@@ -254,7 +254,7 @@ function filterPosts(category: string) {
   });
 }
 
-export function initNavigation() {
+export function initNavigation(opts?: { initialBlogPostId?: string }) {
   col2El = document.getElementById('col-2')!;
   col2Inner = document.getElementById('col-2-inner')!;
   col3El = document.getElementById('col-3')!;
@@ -263,8 +263,20 @@ export function initNavigation() {
   panels = {
     about: document.getElementById('panel-about')!,
     blog: document.getElementById('panel-blog')!,
+    contact: document.getElementById('panel-contact')!,
     'about-site': document.getElementById('panel-about-site')!,
   };
+
+  // On blog post page: Col 2 and Col 3 are already visible in HTML; sync state
+  if (opts?.initialBlogPostId) {
+    state.activePanel = 'blog';
+    state.activeDetail = opts.initialBlogPostId;
+    updateNavHighlight();
+    document.querySelectorAll<HTMLElement>('[data-post]').forEach((el) => {
+      el.classList.toggle('active', el.dataset.post === opts.initialBlogPostId);
+    });
+    updateMobileView();
+  }
 
   document.querySelectorAll<HTMLElement>('[data-nav]').forEach((link) => {
     link.addEventListener('click', (e) => {
@@ -281,6 +293,9 @@ export function initNavigation() {
   document.addEventListener('click', (e) => {
     const target = (e.target as HTMLElement).closest<HTMLElement>('[data-post]');
     if (target) {
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) {
+        return;
+      }
       e.preventDefault();
       showDetail(target.dataset.post!);
     }
