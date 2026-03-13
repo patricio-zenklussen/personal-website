@@ -622,6 +622,20 @@ html[data-theme="amoled"] {
   .back-btn:hover {
     opacity: 1;
   }
+
+  /* Disclaimer en flujo para que no tape títulos al hacer scroll */
+  .site-wrapper .blog-language-note {
+    position: static;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin-top: var(--space-2xl);
+    margin-bottom: max(var(--space-col-y), env(safe-area-inset-bottom));
+  }
+
+  .site-wrapper #panel-blog {
+    padding-bottom: 0;
+  }
 }
 
 /* Compact-height touch layouts (landscape phones/tablets) */
