@@ -4,6 +4,7 @@ date: "2019-12-26"
 description: "But satirists in less democratic countries have a few ideas that the U.S. might find valuable."
 category: "notes"
 tags: ["journalism"]
+draft: true
 ---
 
 > This article was first published on [Talking Points Memo](https://talkingpointsmemo.com/cafe/satire-in-the-us-has-a-trump-problem-less-democratic-countries-have-some-solutions) on December 26, 2019. It was written collaboratively with **Ike Wilson**, **Momina Mindeel**, and **Maznah Shehzad** — fellow communications and journalism professionals from the United States and Pakistan — as part of a project between TPM and NYU journalism graduate students.
