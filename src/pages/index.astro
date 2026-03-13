@@ -13,11 +13,6 @@ const posts = import.meta.env.PROD
 const categories = ['all', ...new Set(posts.map((p) => p.data.category))];
 
 
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr);
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
-}
-
 const renderedPosts = await Promise.all(
   posts.map(async (post) => {
     const { Content } = await render(post);
@@ -101,7 +96,6 @@ const renderedPosts = await Promise.all(
             <li>
               <a href={`/blog/${encodeURIComponent(post.id)}`} class="post-item" data-post={post.id} data-category={post.data.category}>
                 <span class="post-meta text-muted">
-                  <span>{formatDate(post.data.date)}</span>
                   <span class="post-cat">{post.data.category.toUpperCase()}</span>
                 </span>
                 <span class="post-title">{post.data.title}</span>
@@ -221,7 +215,6 @@ const renderedPosts = await Promise.all(
             title="Open in new tab"
           >↗</a>
         </div>
-        <p class="post-meta-line text-muted text-small uppercase">{formatDate(post.data.date)}</p>
         {post.data.description ? (
           <p class="post-lead">{post.data.description}</p>
         ) : null}

@@ -27,11 +27,6 @@ const nextPost =
     ? posts[currentIndex + 1]
     : null;
 
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr);
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
-}
-
 const { Content } = await render(post);
 ---
 <Base
@@ -53,7 +48,6 @@ const { Content } = await render(post);
       <div id="detail-content">
         <div class="post-header">
           <h2 class="panel-title" tabindex="-1">{post.data.title}</h2>
-          <p class="post-meta-line text-muted text-small uppercase">{formatDate(post.data.date)}</p>
           {post.data.description ? <p class="post-lead">{post.data.description}</p> : null}
         </div>
         <div class="prose">
